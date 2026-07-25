@@ -1,105 +1,168 @@
-<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+# Fetch Data with AWS Lambda
 
-# Build a Three-Tier Web App
+A serverless AWS project that demonstrates how to fetch user data from an Amazon DynamoDB table using AWS Lambda and expose the data through an Amazon API Gateway REST API.
 
-**Project Link:** [View Project](http://nextwork.ai/projects/aws-compute-threetier)
+##  Project Overview
 
-**Author:** Mohd Mudassir Arfath  
-**Email:** mudassirarfath23@gmail.com
+This project demonstrates the implementation of a serverless data-fetching workflow using AWS services. A user sends a request to an API Gateway endpoint, which triggers an AWS Lambda function. The Lambda function retrieves the requested user data from an Amazon DynamoDB table and returns the response through the API.
+
+The project helped me gain practical experience in building and connecting serverless AWS components and understanding how API-driven applications work in a cloud environment.
+
+##  Architecture
+
+```text
+                  ┌─────────────────────┐
+                  │       Client        │
+                  │  Browser / API Tool │
+                  └──────────┬──────────┘
+                             │
+                             │ GET Request
+                             ▼
+                  ┌─────────────────────┐
+                  │    API Gateway      │
+                  │     REST API        │
+                  └──────────┬──────────┘
+                             │
+                             │ Triggers
+                             ▼
+                  ┌─────────────────────┐
+                  │    AWS Lambda       │
+                  │  Fetch Data Logic   │
+                  └──────────┬──────────┘
+                             │
+                             │ Query
+                             ▼
+                  ┌─────────────────────┐
+                  │   Amazon DynamoDB   │
+                  │    User Data        │
+                  └──────────┬──────────┘
+                             │
+                             │ Returns Data
+                             ▼
+                  ┌─────────────────────┐
+                  │    API Response     │
+                  └─────────────────────┘
+```
+
+##  AWS Services Used
+
+| Service                | Purpose                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| **AWS Lambda**         | Executes the serverless function and retrieves user data   |
+| **Amazon DynamoDB**    | Stores user information in a NoSQL database                |
+| **Amazon API Gateway** | Provides a REST API endpoint to invoke the Lambda function |
+
+## How the Application Works
+
+1. The client sends a **GET request** to the API Gateway endpoint.
+2. API Gateway receives the request and invokes the Lambda function.
+3. The Lambda function processes the request and identifies the requested user.
+4. Lambda queries the user data stored in the DynamoDB table.
+5. DynamoDB returns the requested item to Lambda.
+6. Lambda sends the retrieved data back through API Gateway.
+7. The client receives the user data as an API response.
+
+##  Implementation Steps
+
+### 1. Create a DynamoDB Table
+
+An Amazon DynamoDB table was created to store sample user information.
+
+The table contains user data that can be retrieved using a unique user ID.
+
+### 2. Add Sample User Data
+
+Sample user records were added to the DynamoDB table for testing the application.
+
+### 3. Create an AWS Lambda Function
+
+An AWS Lambda function was created to:
+
+* Receive the user request.
+* Retrieve the user ID from the request.
+* Query DynamoDB for the requested user.
+* Return the retrieved data as a response.
+
+### 4. Create an API Gateway REST API
+
+An Amazon API Gateway REST API was created to provide an HTTP endpoint for accessing the Lambda function.
+
+A **GET method** was configured to handle user data requests.
+
+### 5. Deploy the API
+
+The API was deployed to a production stage, making the endpoint accessible for testing.
+
+### 6. Test the Application
+
+The API was tested by sending a GET request with a user ID and verifying that the correct user data was returned from DynamoDB through Lambda.
+
+##  Project Structure
+
+```text
+fetch-data-with-lambda/
+│
+├── lambda/
+│   └── lambda_function.py
+│
+├── screenshots/
+│   ├── dynamodb.png
+│   ├── lambda.png
+│   ├── api-gateway.png
+│   └── api-response.png
+│
+├── documentation/
+│   └── project-documentation.pdf
+│
+└── README.md
+```
+##  Project Screenshots
+
+### Amazon DynamoDB
+
+Shows the DynamoDB table containing sample user data.
+
+### AWS Lambda
+
+Shows the Lambda function responsible for retrieving data from DynamoDB.
+
+### Amazon API Gateway
+
+Shows the REST API and GET method used to invoke the Lambda function.
+
+### API Response
+
+Shows the returned user data after successfully calling the API endpoint.
+
+##  Key Learnings
+
+Through this project, I gained practical experience in:
+
+* Building serverless applications using AWS.
+* Creating and configuring AWS Lambda functions.
+* Working with Amazon DynamoDB and NoSQL data.
+* Creating REST APIs using Amazon API Gateway.
+* Connecting API Gateway with Lambda.
+* Retrieving database data through serverless functions.
+* Testing API endpoints and validating responses.
+* Understanding event-driven and serverless application architecture.
+
+##  Security Considerations
+
+No AWS credentials, access keys, passwords, or other sensitive information are stored in this repository.
+
+##  Future Improvements
+
+* Add authentication and authorization using Amazon Cognito.
+* Implement additional API methods such as POST, PUT, and DELETE.
+* Add input validation and improved error handling.
+* Add monitoring and logging using Amazon CloudWatch.
+* Build a frontend interface to interact with the API.
+
+##  Project Outcome
+
+Successfully built and tested a serverless data-fetching application using **AWS Lambda, Amazon DynamoDB, and Amazon API Gateway**. This project demonstrates how cloud services can be integrated to create a scalable and event-driven application without managing traditional servers.
 
 ---
 
-## Build a Three-Tier Web App
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_2b3c4d5e)
-
----
-
-## Introducing Today's Project!
-
-We are here to build a three-tier serverless web application on AWS by connecting S3, CloudFront, API Gateway, Lambda, and DynamoDB together. This will help us learn how these AWS services work together to create a scalable and reliable application.
-
-### Tools and concepts
-
-I learned about key AWS services such as Amazon S3, CloudFront, API Gateway, AWS Lambda, and DynamoDB. I also learned how these services work together in a serverless three-tier web application, along with important concepts like CORS, API integration, IAM permissions, CloudFront caching, and secure access to AWS resources.
-
-### Project reflection
-
-It took me approximately 3–4 hours to complete this project, including configuring the AWS services, troubleshooting errors, and testing the final solution.
-
-Thank you! I enjoyed working on this project and learned a lot about building and troubleshooting a serverless web application using AWS services.
-
----
-
-## Presentation tier
-
-We are setting up the presentation tier, which is the front-end of our application. We will use Amazon S3 to store the website files and CloudFront to deliver the website content quickly to users around the world.
-
-I accessed my website using the CloudFront distribution URL in a web browser. CloudFront delivered the website content from my S3 bucket to the browser.
-
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_3a4b5c6d)
-
----
-
-## Logic tier
-
-We are setting up the logic tier by creating an AWS Lambda function that retrieves data from a DynamoDB table. We are also using API Gateway to create a REST API that handles GET requests and connects users to the Lambda function.
-
-The Lambda function retrieves data by using the AWS SDK to connect to the DynamoDB table. It sends a Scan or Query request to DynamoDB, retrieves the stored items, and returns the data as the response.
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_6a7b8c9d)
-
----
-
-## Data tier
-
-We are setting up the data tier by creating an Amazon DynamoDB table to store application data. We will also add user data to the table so that the Lambda function can retrieve it when requested.
-
-We are using DynamoDB to store and manage user data for our application. The Lambda function will later retrieve this data from the DynamoDB table when a user makes a request...
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_u1v2w3x4)
-
----
-
-## Logic and Data tier
-
-We are integrating all three tiers of our application. We will update the script.js file to send a request to the API Gateway endpoint, receive the data retrieved from DynamoDB through Lambda, and display that data on our website.
-
-I tested my API by sending a GET request to the API Gateway endpoint in a web browser. I verified that the API successfully returned the user data retrieved from the DynamoDB table through the Lambda function.
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_a112c3d5)
-
----
-
-## Console Errors
-
-I got an error because the script.js file was still using the placeholder YOUR-PROD-API-URL instead of the actual API Gateway endpoint URL. Therefore, the CloudFront website could not connect to the API Gateway and retrieve the user data.
-
-I uploaded an updated script.js because the original file contained a placeholder for the API Gateway URL. I replaced the placeholder with the actual production API Gateway Invoke URL so the CloudFront website could connect to the API and retrieve user data.
-
-I ran into another error because the browser blocked the request from the CloudFront website to the API Gateway due to a CORS (Cross-Origin Resource Sharing) issue. The API needs to allow requests coming from the CloudFront website's domain.
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_a1b2c3d5)
-
----
-
-## Resolving CORS Errors
-
-I updated the CORS configuration in my API Gateway. I allowed GET and OPTIONS methods and set my CloudFront distribution domain as the allowed origin, so my CloudFront website can securely make requests to the API.
-
-I updated my Lambda function because the CORS headers need to be included in the Lambda response. This allows the browser to accept responses from the API when requests are made by my CloudFront website.
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_1qthryj2)
-
----
-
-## Fixed Solution
-
-I verified the fixed solution by refreshing my CloudFront website and checking that the data from DynamoDB was successfully fetched and displayed on the webpage without any CORS errors.
-
-![Image](http://nextwork.ai/thrilled_cyan_smart_blueberry/uploads/aws-compute-threetier_2b3c4d5e)
-
----
-
----
+ **If you found this project useful, feel free to explore the repository and connect with me.**
